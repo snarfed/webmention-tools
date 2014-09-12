@@ -36,7 +36,7 @@ class WebmentionSend():
                 'http_status': r.status_code,
             }
             return
-        elif r.headers.get('content-type') != 'text/html':
+        elif not r.headers.get('content-type').startswith('text/html'):
             self.error = {
                 'code': 'NO_ENDPOINT',
                 'error_description': 'Unable to discover webmention endpoint.'
