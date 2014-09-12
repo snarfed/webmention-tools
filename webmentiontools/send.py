@@ -30,10 +30,16 @@ class WebmentionSend():
         r = requests.get(self.target_url, verify=False, **self.requests_kwargs)
         if r.status_code != 200:
             self.error = {
-                'code':'BAD_TARGET_URL',
+                'code': 'BAD_TARGET_URL',
                 'error_description': 'Unable to get target URL.',
                 'request': 'GET %s' % self.target_url,
                 'http_status': r.status_code,
+            }
+            return
+        elif r.headers.get('content-type') != 'text/html':
+            self.error = {
+                'code': 'NO_ENDPOINT',
+                'error_description': 'Unable to discover webmention endpoint.'
             }
             return
         self.html = r.text
