@@ -28,6 +28,7 @@ class WebmentionSend():
 
     def _discoverEndpoint(self):
         r = requests.get(self.target_url, verify=False, **self.requests_kwargs)
+        content_type = r.headers.get('content-type') or 'text/html'
         if r.status_code != 200:
             self.error = {
                 'code': 'BAD_TARGET_URL',
@@ -36,7 +37,7 @@ class WebmentionSend():
                 'http_status': r.status_code,
             }
             return
-        elif not r.headers.get('content-type').startswith('text/html'):
+        elif not content_type.startswith('text/html'):
             self.error = {
                 'code': 'NO_ENDPOINT',
                 'error_description': 'Unable to discover webmention endpoint.'
