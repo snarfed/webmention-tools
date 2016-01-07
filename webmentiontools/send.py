@@ -86,7 +86,7 @@ class WebmentionSend():
                 'http_status': r.status_code,
                 }
             try:
-                self.error.update(r.json())
+                self.error['body_json'] = r.json()
             except:
                 self.error['body'] = r.text
             return False
