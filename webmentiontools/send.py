@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 class WebmentionSend():
 
     LINK_HEADER_RE = re.compile(
-        r'''<([^>]+)>; rel=["'](http://)?webmention(\.org/?)?["']''')
+        r'''<([^>]+)>; rel=["']?(http://)?webmention(\.org/?)?["']?''')
 
     def __init__(self, source, target, endpoint=None):
         self.source_url = source
