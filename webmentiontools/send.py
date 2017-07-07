@@ -59,8 +59,8 @@ class WebmentionSend():
         # look in the content
         soup = BeautifulSoup(self.html)
         tag = None
-        for name, rel in itertools.product(('link', 'a'), ('webmention', 'http://webmention.org/')):
-            tag = soup.find(name, attrs={'rel': rel})
+        for tag in soup.find_all(['link', 'a'],
+                                 attrs={'rel': ['webmention', 'http://webmention.org/']}):
             if tag:
                 break
 
