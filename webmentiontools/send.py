@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import copy
 import itertools
-import urlparse
 import re
-import requests
+import urlparse
+
 from bs4 import BeautifulSoup
+import requests
+
 
 class WebmentionSend():
 
@@ -75,12 +78,13 @@ class WebmentionSend():
 
     def _notifyReceiver(self):
         payload = {'source': self.source_url, 'target': self.target_url}
-        headers = {'Accept': '*/*'}
+        requests_kwargs = copy.deepcopy(self.requests_kwargs)
+        requests_kwargs.setdefault('headers', {})['Accept'] = '*/*'
         # following 3xx redirects translates POST to GET, which we don't want,
         # so disable that. we may support 307/308 later.
         # https://github.com/snarfed/bridgy/issues/753
         r = requests.post(self.receiver_endpoint, verify=False, data=payload,
-                          allow_redirects=False, **self.requests_kwargs)
+                          allow_redirects=False, **requests_kwargs)
 
         request_str = 'POST %s (with source=%s, target=%s)' % (self.receiver_endpoint, self.source_url, self.target_url)
         if r.status_code / 100 != 2:
