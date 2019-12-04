@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
+try:
+    from urllib.parse import urljoin
+except ImportError:  # Python2.7
+    from urlparse import urljoin
+
 from bs4 import BeautifulSoup
-from urlparse import urljoin
+import requests
+
 
 class UrlInfo():
 
@@ -20,8 +25,8 @@ class UrlInfo():
         if r.status_code != 200:
             self.error = True
             return
-	# use apparent_encoding, seems to work better in the cases I tested.
-    	r.encoding = r.apparent_encoding 
+        # use apparent_encoding, seems to work better in the cases I tested.
+        r.encoding = r.apparent_encoding
         self.soup = BeautifulSoup(r.text)
 
     def inReplyTo(self):
@@ -46,7 +51,7 @@ class UrlInfo():
         if ir2_time  and ir2_time.has_attr('datetime') :
             self.data['pubDate'] = ir2_time['datetime']
             return ir2_time['datetime']
-        
+
     def title(self):
         if self.data.has_key('title'):
             return self.data['title']

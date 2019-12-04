@@ -17,7 +17,7 @@ class WebmentionIO():
         url = "%s/links" % self.api_endpoint
         headers = {'Accept': 'application/json'}
         payload = { k:v, 'access_token': self.access_token }
-        r = requests.get(url, headers=headers, params=payload)       
+        r = requests.get(url, headers=headers, params=payload)
         if r.status_code != 200:
             self.error = r.text
             return False
@@ -36,7 +36,7 @@ class WebmentionIO():
             return False
         else:
             return links
-        
+
     def linksToAll(self):
         pass
 

@@ -4,7 +4,10 @@
 import copy
 import itertools
 import re
-import urlparse
+try:
+    from urllib.parse import urljoin
+except ImportError:  # Python2.7
+    from urlparse import urljoin
 
 from bs4 import BeautifulSoup
 import requests
@@ -55,8 +58,7 @@ class WebmentionSend():
         for link in r.headers.get('link', '').split(','):
             match = self.LINK_HEADER_RE.search(link)
             if match:
-                self.receiver_endpoint = urlparse.urljoin(self.target_url,
-                                                          match.group(1))
+                self.receiver_endpoint = urljoin(self.target_url, match.group(1))
                 return
 
         # look in the content
@@ -69,7 +71,7 @@ class WebmentionSend():
 
         if tag and tag.get('href'):
             # add the base scheme and host to relative endpoints
-            self.receiver_endpoint = urlparse.urljoin(self.target_url, tag['href'])
+            self.receiver_endpoint = urljoin(self.target_url, tag['href'])
         else:
             self.error = {
                 'code': 'NO_ENDPOINT',
