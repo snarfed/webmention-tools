@@ -89,7 +89,7 @@ class WebmentionSend():
                           allow_redirects=False, **requests_kwargs)
 
         request_str = 'POST %s (with source=%s, target=%s)' % (self.receiver_endpoint, self.source_url, self.target_url)
-        if r.status_code / 100 != 2:
+        if r.status_code // 100 != 2:
             self.error = {
                 'code':'RECEIVER_ERROR',
                 'request': request_str,
