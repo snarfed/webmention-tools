@@ -33,7 +33,7 @@ class WebmentionSend():
         return self._notifyReceiver()
 
     def _discoverEndpoint(self):
-        r = requests.get(self.target_url, verify=False, **self.requests_kwargs)
+        r = requests.get(self.target_url, **self.requests_kwargs)
         content_type = r.headers.get('content-type') or 'text/html'
         if r.status_code != 200:
             self.error = {
@@ -85,7 +85,7 @@ class WebmentionSend():
         # following 3xx redirects translates POST to GET, which we don't want,
         # so disable that. we may support 307/308 later.
         # https://github.com/snarfed/bridgy/issues/753
-        r = requests.post(self.receiver_endpoint, verify=False, data=payload,
+        r = requests.post(self.receiver_endpoint, data=payload,
                           allow_redirects=False, **requests_kwargs)
 
         request_str = 'POST %s (with source=%s, target=%s)' % (self.receiver_endpoint, self.source_url, self.target_url)
